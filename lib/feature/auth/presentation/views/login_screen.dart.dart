@@ -1,23 +1,54 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ited_study_app_admin/core/constants/boxsize.dart';
 import 'package:ited_study_app_admin/core/constants/style.dart';
+import 'package:ited_study_app_admin/core/route/routes.dart';
 import 'package:ited_study_app_admin/core/widgets/form_field.dart';
+import 'package:ited_study_app_admin/feature/auth/presentation/providers/login_provider.dart';
 
-class AdminLoginScreen extends StatefulWidget {
+class AdminLoginScreen extends ConsumerStatefulWidget {
   const AdminLoginScreen({super.key});
 
   @override
-  State<AdminLoginScreen> createState() => _AdminLoginScreenState();
+  ConsumerState<AdminLoginScreen> createState() => _AdminLoginScreenState();
 }
 
-class _AdminLoginScreenState extends State<AdminLoginScreen> {
-  final TextEditingController _emailController = TextEditingController();
+class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
+    final loginState = ref.watch(loginNotifierProvider);
+    ref.listen(
+      loginNotifierProvider,
+      (previous, next) async {
+        if (next.status == LoginStatus.success) {
+          final snackBar = SnackBar(
+            content: Text(next.message ?? 'Login Success'),
+          );
+          ScaffoldFeatureController<SnackBar, SnackBarClosedReason>
+              snackBarController =
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+          await snackBarController.closed;
+
+          context.pushReplacement(AdminRoutes.dashboard);
+        } else if (next.status == LoginStatus.error) {
+          final snackbar = SnackBar(
+            content: Text(next.error ?? "login failed"),
+          );
+          ScaffoldFeatureController<SnackBar, SnackBarClosedReason>
+              snackBarController =
+              ScaffoldMessenger.of(context).showSnackBar(snackbar);
+          snackBarController.close;
+        }
+      },
+    );
     return Scaffold(
       body: Row(
         children: [
@@ -161,7 +192,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 100),
+                  padding: const EdgeInsets.symmetric(horizontal: 80),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -181,13 +212,15 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                         child: Column(
                           children: [
                             CustomFormField(
+                              label: 'Username',
                               obscure: false,
-                              controller: _emailController,
+                              controller: _usernameController,
                               keyboardType: TextInputType.emailAddress,
-                              hintText: 'Email',
+                              hintText: 'Username',
                             ),
                             CustomBoxSize.medium,
                             CustomFormField(
+                              label: 'Password',
                               obscure: true,
                               controller: _passwordController,
                               keyboardType: TextInputType.visiblePassword,
@@ -197,27 +230,39 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                         ),
                       ),
                       CustomBoxSize.big,
-                      Container(
-                        width: double.infinity,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [
-                              Color.fromRGBO(0, 16, 147, 1),
-                              Color.fromRGBO(0, 5, 45, 1),
-                            ],
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Login",
-                            style: CustomStyle.loginStyle,
-                          ),
-                        ),
-                      ),
+                      loginState.status == LoginStatus.loading
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                ref.read(loginNotifierProvider.notifier).login(
+                                      _usernameController.text.trim(),
+                                      _passwordController.text.trim(),
+                                    );
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color.fromRGBO(0, 16, 147, 1),
+                                      Color.fromRGBO(0, 5, 45, 1),
+                                    ],
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Login",
+                                    style: CustomStyle.loginStyle,
+                                  ),
+                                ),
+                              ),
+                            ),
                       CustomBoxSize.big,
                     ],
                   ),
@@ -232,7 +277,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }

@@ -7,4 +7,5 @@ class AdminRoutes {
   static const String dashboard = '/dashboard';
   static const String responsive = '/responsive';
   static const String note = '/note';
+  static const String mobile = '/mobile';
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class TextMobile extends StatelessWidget {
-  const TextMobile({super.key});
+class Mobile extends StatelessWidget {
+  const Mobile({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class TextMobile extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Center(
           child: Text(
-            "Admin User Detected Pls log in from a tablet or desktop",
+            "Please log in from a desktop device to access the admin dashboard.",
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 18,

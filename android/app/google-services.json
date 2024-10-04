@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "426048874487",
+    "project_id": "ited-admin",
+    "storage_bucket": "ited-admin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426048874487:android:4a5b6cd1833d99e200f0f2",
+        "android_client_info": {
+          "package_name": "com.ited.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "426048874487-8js8k59dde0g0c1dnnglg972qdtrv6ua.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjXg9phhabMcnm-8EsD-PHAdkz8vkZrYY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "426048874487-8js8k59dde0g0c1dnnglg972qdtrv6ua.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "426048874487-c6kmhdfrtuqi54983mkvtmaio2vvmgv0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.itedStudyAppAdmin"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

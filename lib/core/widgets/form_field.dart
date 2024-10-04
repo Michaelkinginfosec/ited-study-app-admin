@@ -10,6 +10,7 @@ class CustomFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   const CustomFormField({
     super.key,
+    // this.suffix,
     required this.obscure,
     this.label,
     this.hintText,
@@ -26,22 +27,37 @@ class CustomFormField extends StatelessWidget {
       keyboardType: keyboardType,
       validator: validator,
       decoration: InputDecoration(
+        // suffix: suffix,
         label: Text(label!),
         hintStyle: const TextStyle(
           color: Color.fromRGBO(0, 0, 0, 1),
           fontSize: 10,
         ),
-        contentPadding: const EdgeInsets.only(left: 20),
+        // contentPadding: const EdgeInsets.only(left: 10, right: 10),
         hintText: hintText,
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(
             color: Color.fromRGBO(0, 5, 45, 1),
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(
+            color: Color.fromRGBO(0, 5, 45, 1),
+            width: 1,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(
+            color: Color.fromRGBO(0, 5, 45, 1),
+            width: 1,
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(
             color: Color.fromRGBO(0, 5, 45, 1),
             width: 1,
